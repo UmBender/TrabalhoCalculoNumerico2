@@ -7,10 +7,9 @@ struct DadosLinha {
 	float y_i;
 };
 
-
 typedef struct DadosLinha DadosLinha;
 
-int main(void)
+int main(int argc, char ** argv)
 {
 	FILE *f;
 	DadosLinha *arquivos;
