@@ -50,6 +50,4 @@ int main(int argc, char ** argv)
 		printf("%lf\n", arquivos[i].y_i);
 	}
 	return 0;
-	FILE *c = fopen("./dadosEx2.txt", "r");
-	fclose(c);
 }
