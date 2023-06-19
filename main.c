@@ -10,7 +10,16 @@ struct DadosLinha
 };
 
 typedef struct DadosLinha DadosLinha;
-
+double Sum1(DadosLinha *x)
+{
+	double soma = 0;
+	for (int i = 0; i <= 100; i++)
+	{
+		soma += 1;
+	}
+	return soma;
+}
+/*
 double Sum1(double *x)
 {
 	double soma = 0;
@@ -20,71 +29,73 @@ double Sum1(double *x)
 	}
 	return soma;
 }
+*/
 
-double SumExp(double *x)
+double SumExp(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += exp(x[i]);
+		soma += exp(x[i].t_t);
 	}
 	return soma;
 }
 
-double SumSen(double *x)
+double SumSen(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 1; i <= 100; i++)
 	{
-		soma += sin(x[i]);
+		soma += sin(x[i].t_t);
 	}
 	return soma;
 }
 
-double SumExpSen(double *x)
+double SumExpSen(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 1; i <= 100; i++)
 	{
-		soma += exp(x[i]) * sin(x[i]);
+		soma += exp(x[i].t_t) * sin(x[i].t_t);
 	}
 	return soma;
 }
 
-double SumExpG(double *x, double *y)
+double SumExpG(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 1; i <= 100; i++)
 	{
-		soma += exp(x[i]) * y[i];
+		soma += exp(x[i].t_t) * x[i].y_i;
 	}
 	return soma;
 }
 
-double SumSenG(double *x, double *y)
+double SumSenG(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 1; i <= 100; i++)
 	{
-		soma += sin(x[i]) * y[i];
+		soma += sin(x[i].t_t) * x[i].y_i;
 	}
 	return soma;
 }
 
-double SistLin(double *x, double *y)
+void SistLin(DadosLinha *x)
 {
 	double a, b;
 	double q1 = SumExp(x);
 	double q2 = SumSen(x);
-	double q3 = SumExpG(x, y);
+	double q3 = SumExpG(x);
 	double q4 = SumSen(x);
 	double q5 = SumExpSen(x);
-	double q6 = SumSenG(x, y);
+	double q6 = SumSenG(x);
 
 	double det = q1 * q4 - q2 * q3;
 	a = (q5 * q4 - q2 * q6) / det;
 	b = (q1 * q6 - q2 * q5) / det;
-	return a, b;
+	printf("valor a: %lf\n", a);
+	printf("valor b: %lf\n", b);
 }
 
 int main(int argc, char **argv)
@@ -94,7 +105,7 @@ int main(int argc, char **argv)
 	arquivos = (DadosLinha *)malloc(sizeof(DadosLinha) * 101);
 
 	char buff[256];
-	f = fopen("C:\\Users\\joaov\\.vscode\\Projetos\\CN\\Trab\\TrabalhoCalculoNumerico2\\BancoCN.txt", "r");
+	f = fopen("./BancoCN.txt", "r");
 	if (f == NULL)
 	{
 		printf("Erro na abertura\n");
@@ -114,6 +125,7 @@ int main(int argc, char **argv)
 		atualPos = &arquivos[i];
 	}
 	fclose(f);
+	/*
 
 	for (size_t i = 0; i < 101; i++)
 	{
@@ -122,5 +134,8 @@ int main(int argc, char **argv)
 		printf("%lf,", arquivos[i].t_t);
 		printf("%lf\n", arquivos[i].y_i);
 	}
+	*/
+
+	SistLin(arquivos);
 	return 0;
 }
