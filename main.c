@@ -11,6 +11,82 @@ struct DadosLinha
 
 typedef struct DadosLinha DadosLinha;
 
+double Sum1(double *x)
+{
+	double soma = 0;
+	for (int i = 0; i <= 100; i++)
+	{
+		soma += 1;
+	}
+	return soma;
+}
+
+double SumExp(double *x)
+{
+	double soma = 0;
+	for (int i = 0; i <= 100; i++)
+	{
+		soma += exp(x[i]);
+	}
+	return soma;
+}
+
+double SumSen(double *x)
+{
+	double soma = 0;
+	for (int i = 1; i <= 100; i++)
+	{
+		soma += sin(x[i]);
+	}
+	return soma;
+}
+
+double SumExpSen(double *x)
+{
+	double soma = 0;
+	for (int i = 1; i <= 100; i++)
+	{
+		soma += exp(x[i]) * sin(x[i]);
+	}
+	return soma;
+}
+
+double SumExpG(double *x, double *y)
+{
+	double soma = 0;
+	for (int i = 1; i <= 100; i++)
+	{
+		soma += exp(x[i]) * y[i];
+	}
+	return soma;
+}
+
+double SumSenG(double *x, double *y)
+{
+	double soma = 0;
+	for (int i = 1; i <= 100; i++)
+	{
+		soma += sin(x[i]) * y[i];
+	}
+	return soma;
+}
+
+double SistLin(double *x, double *y)
+{
+	double a, b;
+	double q1 = SumExp(x);
+	double q2 = SumSen(x);
+	double q3 = SumExpG(x, y);
+	double q4 = SumSen(x);
+	double q5 = SumExpSen(x);
+	double q6 = SumSenG(x, y);
+
+	double det = q1 * q4 - q2 * q3;
+	a = (q5 * q4 - q2 * q6) / det;
+	b = (q1 * q6 - q2 * q5) / det;
+	return a, b;
+}
+
 int main(int argc, char **argv)
 {
 	FILE *f;
@@ -49,80 +125,4 @@ int main(int argc, char **argv)
 	return 0;
 	FILE *c = fopen("./dadosEx2.txt", "r");
 	fclose(c);
-}
-
-double Sum1(float *x)
-{
-	double soma = 0;
-	for (int i = 0; i <= 100; i++)
-	{
-		soma += 1;
-	}
-	return soma;
-}
-
-double SumExp(float *x)
-{
-	double soma = 0;
-	for (int i = 0; i <= 100; i++)
-	{
-		soma += exp(x[i]);
-	}
-	return soma;
-}
-
-double SumSen(float *x)
-{
-	double soma = 0;
-	for (int i = 1; i <= 100; i++)
-	{
-		soma += sin(x[i]);
-	}
-	return soma;
-}
-
-double SumExpSen(float *x)
-{
-	double soma = 0;
-	for (int i = 1; i <= 100; i++)
-	{
-		soma += exp(x[i]) * sin(x[i]);
-	}
-	return soma;
-}
-
-double SumExpG(float *x, float *y)
-{
-	double soma = 0;
-	for (int i = 1; i <= 100; i++)
-	{
-		soma += exp(x[i]) * y[i];
-	}
-	return soma;
-}
-
-double SumSenG(float *x, float *y)
-{
-	double soma = 0;
-	for (int i = 1; i <= 100; i++)
-	{
-		soma += sin(x[i]) * y[i];
-	}
-	return soma;
-}
-
-double SistLin(float *x, float *y)
-{
-	double a, b;
-	double q1 = SumExp(x);
-	double q2 = SumSen(x);
-	double q3 = SumExpG(x, y);
-	double q4 = SumSen(x);
-	double q5 = SumExpSen(x);
-	double q6 = SumSenG(x, y);
-
-	double det = q1 * q4 - q2 * q3;
-	a = (q5 * q4 - q2 * q6) / det;
-	b = (q1 * q6 - q2 * q5) / det;
-	return a, b;
 }
