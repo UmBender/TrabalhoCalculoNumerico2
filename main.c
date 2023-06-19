@@ -10,53 +10,33 @@ struct DadosLinha
 };
 
 typedef struct DadosLinha DadosLinha;
-double Sum1(DadosLinha *x)
-{
-	double soma = 0;
-	for (int i = 0; i <= 100; i++)
-	{
-		soma += 1;
-	}
-	return soma;
-}
-/*
-double Sum1(double *x)
-{
-	double soma = 0;
-	for (int i = 0; i <= 100; i++)
-	{
-		soma += 1;
-	}
-	return soma;
-}
-*/
-
-double SumExp(DadosLinha *x)
-{
-	double soma = 0;
-	for (int i = 0; i <= 100; i++)
-	{
-		soma += exp(x[i].t_t);
-	}
-	return soma;
-}
-
-double SumSen(DadosLinha *x)
-{
-	double soma = 0;
-	for (int i = 1; i <= 100; i++)
-	{
-		soma += sin(x[i].t_t);
-	}
-	return soma;
-}
 
 double SumExpSen(DadosLinha *x)
 {
 	double soma = 0;
-	for (int i = 1; i <= 100; i++)
+	for (int i = 0; i <= 100; i++)
 	{
-		soma += exp(x[i].t_t) * sin(x[i].t_t);
+		soma += exp(0.1 * x[i].t_t) * sin(x[i].t_t);
+	}
+	return soma;
+}
+
+double SumExpExp(DadosLinha *x)
+{
+	double soma = 0;
+	for (int i = 0; i <= 100; i++)
+	{
+		soma += exp(0.1 * x[i].t_t) * exp(0.1 * x[i].t_t);
+	}
+	return soma;
+}
+
+double SumSenSen(DadosLinha *x)
+{
+	double soma = 0;
+	for (int i = 0; i <= 100; i++)
+	{
+		soma += sin(x[i].t_t) * sin(x[i].t_t);
 	}
 	return soma;
 }
@@ -64,9 +44,9 @@ double SumExpSen(DadosLinha *x)
 double SumExpG(DadosLinha *x)
 {
 	double soma = 0;
-	for (int i = 1; i <= 100; i++)
+	for (int i = 0; i <= 100; i++)
 	{
-		soma += exp(x[i].t_t) * x[i].y_i;
+		soma += exp(0.1 * x[i].t_t) * x[i].y_i;
 	}
 	return soma;
 }
@@ -74,7 +54,7 @@ double SumExpG(DadosLinha *x)
 double SumSenG(DadosLinha *x)
 {
 	double soma = 0;
-	for (int i = 1; i <= 100; i++)
+	for (int i = 0; i <= 100; i++)
 	{
 		soma += sin(x[i].t_t) * x[i].y_i;
 	}
@@ -84,11 +64,11 @@ double SumSenG(DadosLinha *x)
 void SistLin(DadosLinha *x)
 {
 	double a, b;
-	double q1 = SumExp(x);
-	double q2 = SumSen(x);
-	double q3 = SumExpG(x);
-	double q4 = SumSen(x);
-	double q5 = SumExpSen(x);
+	double q1 = SumExpExp(x);
+	double q2 = SumExpSen(x);
+	double q3 = SumExpSen(x);
+	double q4 = SumSenSen(x);
+	double q5 = SumExpG(x);
 	double q6 = SumSenG(x);
 
 	double det = q1 * q4 - q2 * q3;
@@ -105,7 +85,7 @@ int main(int argc, char **argv)
 	arquivos = (DadosLinha *)malloc(sizeof(DadosLinha) * 101);
 
 	char buff[256];
-	f = fopen("./BancoCN.txt", "r");
+	f = fopen("C:\\Users\\joaov\\.vscode\\Projetos\\CN\\Trab\\TrabalhoCalculoNumerico2\\BancoCN.txt", "r");
 	if (f == NULL)
 	{
 		printf("Erro na abertura\n");
