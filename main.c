@@ -11,52 +11,59 @@ struct DadosLinha
 
 typedef struct DadosLinha DadosLinha;
 
-double SumExpSen(DadosLinha *x)
+double g1_version1(double x) {
+	return exp(0.1 * x);
+}
+double g2_version1(double x) {
+	return sin(x);
+}
+
+double SumG1G2(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += exp(0.1 * x[i].t_t) * sin(x[i].t_t);
+		soma += g1_version1(x[i].t_t) * g2_version1(x[i].t_t);
 	}
 	return soma;
 }
 
-double SumExpExp(DadosLinha *x)
+double SumG1G1(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += exp(0.1 * x[i].t_t) * exp(0.1 * x[i].t_t);
+		soma += g1_version1(x[i].t_t) * g1_version1(x[i].t_t);
 	}
 	return soma;
 }
 
-double SumSenSen(DadosLinha *x)
+double SumG2G2(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += sin(x[i].t_t) * sin(x[i].t_t);
+		soma += g2_version1(x[i].t_t) * g2_version1(x[i].t_t);
 	}
 	return soma;
 }
 
-double SumExpG(DadosLinha *x)
+double SumG1F(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += exp(0.1 * x[i].t_t) * x[i].y_i;
+		soma += g1_version1(x[i].t_t) * x[i].y_i;
 	}
 	return soma;
 }
 
-double SumSenG(DadosLinha *x)
+double SumG2F(DadosLinha *x)
 {
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += sin(x[i].t_t) * x[i].y_i;
+		soma += g2_version1(x[i].t_t) * x[i].y_i;
 	}
 	return soma;
 }
@@ -64,12 +71,12 @@ double SumSenG(DadosLinha *x)
 void SistLin(DadosLinha *x)
 {
 	double a, b;
-	double q1 = SumExpExp(x);
-	double q2 = SumExpSen(x);
-	double q3 = SumExpSen(x);
-	double q4 = SumSenSen(x);
-	double q5 = SumExpG(x);
-	double q6 = SumSenG(x);
+	double q1 = SumG1G1(x);
+	double q2 = SumG1G2(x);
+	double q3 = SumG1G2(x);
+	double q4 = SumG2G2(x);
+	double q5 = SumG1F(x);
+	double q6 = SumG2F(x);
 
 	double det = q1 * q4 - q2 * q3;
 	a = (q5 * q4 - q2 * q6) / det;
@@ -85,7 +92,8 @@ int main(int argc, char **argv)
 	arquivos = (DadosLinha *)malloc(sizeof(DadosLinha) * 101);
 
 	char buff[256];
-	f = fopen("C:\\Users\\joaov\\.vscode\\Projetos\\CN\\Trab\\TrabalhoCalculoNumerico2\\BancoCN.txt", "r");
+	//f = fopen("C:\\Users\\joaov\\.vscode\\Projetos\\CN\\Trab\\TrabalhoCalculoNumerico2\\BancoCN.txt", "r");
+	f = fopen("./BancoCN.txt", "r");
 	if (f == NULL)
 	{
 		printf("Erro na abertura\n");
