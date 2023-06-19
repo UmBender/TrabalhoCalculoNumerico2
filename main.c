@@ -18,7 +18,6 @@ struct DadosLinha
 
 typedef struct DadosLinha DadosLinha;
 
-#define VERSAO_1 1 
 
 #if VERSAO_1
 double g1(double x) {
@@ -34,7 +33,7 @@ double g1(double x) {
 	return pow(x, 2.0);
 }
 double g2(double x) {
-	return cos(x * (1.0/2.0));
+	return cos(x);
 }
 #endif /* if !VERSAO_1 */
 
@@ -192,6 +191,8 @@ int main(int argc, char **argv)
 
 	cofs = SistLin(arquivos);
 	double cof_r_novo = Cof_R(arquivos, cofs);
+	double sqres_novo = SQres(arquivos, cofs);
+	printf("SQres = %lf\n", sqres_novo);
 	printf("R^2 = %lf\n", cof_r_novo);
 	return 0;
 }
