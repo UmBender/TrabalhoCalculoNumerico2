@@ -11,12 +11,26 @@ struct DadosLinha
 
 typedef struct DadosLinha DadosLinha;
 
+#define VERSAO_1 1 
+
+#if VERSAO_1
 double g1_version1(double x) {
 	return exp(0.1 * x);
 }
 double g2_version1(double x) {
 	return sin(x);
 }
+#endif /* if VERSAO_1 */
+
+#if !VERSAO_1
+double g1_version1(double x) {
+	return pow(x, 2.0);
+}
+double g2_version1(double x) {
+	return cos(x * (1.0/2.0));
+}
+#endif /* if !VERSAO_1 */
+
 
 double SumG1G2(DadosLinha *x)
 {
