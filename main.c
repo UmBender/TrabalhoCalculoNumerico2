@@ -182,16 +182,6 @@ int main(int argc, char **argv) // Função principal
 		atualPos = &arquivos[i];
 	}
 	fclose(f);
-	/*
-
-	for (size_t i = 0; i < 101; i++) // Print para testar se os dados foram lidos corretamente
-	{
-
-		printf("%zu,", arquivos[i].valor_linha);
-		printf("%lf,", arquivos[i].t_t);
-		printf("%lf\n", arquivos[i].y_i);
-	}
-	*/
 
 	CofResult cofs;
 
