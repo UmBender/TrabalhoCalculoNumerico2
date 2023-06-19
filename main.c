@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <math.h>
 
+struct CofResult {
+	double a;
+	double b;
+};
+
+typedef struct CofResult CofResult;
+
 struct DadosLinha
 {
 	size_t valor_linha;
@@ -14,19 +21,19 @@ typedef struct DadosLinha DadosLinha;
 #define VERSAO_1 1 
 
 #if VERSAO_1
-double g1_version1(double x) {
+double g1(double x) {
 	return exp(0.1 * x);
 }
-double g2_version1(double x) {
+double g2(double x) {
 	return sin(x);
 }
 #endif /* if VERSAO_1 */
 
 #if !VERSAO_1
-double g1_version1(double x) {
+double g1(double x) {
 	return pow(x, 2.0);
 }
-double g2_version1(double x) {
+double g2(double x) {
 	return cos(x * (1.0/2.0));
 }
 #endif /* if !VERSAO_1 */
@@ -37,7 +44,7 @@ double SumG1G2(DadosLinha *x)
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += g1_version1(x[i].t_t) * g2_version1(x[i].t_t);
+		soma += g1(x[i].t_t) * g2(x[i].t_t);
 	}
 	return soma;
 }
@@ -47,7 +54,7 @@ double SumG1G1(DadosLinha *x)
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += g1_version1(x[i].t_t) * g1_version1(x[i].t_t);
+		soma += g1(x[i].t_t) * g1(x[i].t_t);
 	}
 	return soma;
 }
@@ -57,7 +64,7 @@ double SumG2G2(DadosLinha *x)
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += g2_version1(x[i].t_t) * g2_version1(x[i].t_t);
+		soma += g2(x[i].t_t) * g2(x[i].t_t);
 	}
 	return soma;
 }
@@ -67,7 +74,7 @@ double SumG1F(DadosLinha *x)
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += g1_version1(x[i].t_t) * x[i].y_i;
+		soma += g1(x[i].t_t) * x[i].y_i;
 	}
 	return soma;
 }
@@ -77,12 +84,12 @@ double SumG2F(DadosLinha *x)
 	double soma = 0;
 	for (int i = 0; i <= 100; i++)
 	{
-		soma += g2_version1(x[i].t_t) * x[i].y_i;
+		soma += g2(x[i].t_t) * x[i].y_i;
 	}
 	return soma;
 }
 
-void SistLin(DadosLinha *x)
+CofResult SistLin(DadosLinha *x)
 {
 	double a, b;
 	double q1 = SumG1G1(x);
@@ -97,7 +104,48 @@ void SistLin(DadosLinha *x)
 	b = (q1 * q6 - q2 * q5) / det;
 	printf("valor a: %lf\n", a);
 	printf("valor b: %lf\n", b);
+
+	CofResult resultado;
+	resultado.a = a;
+	resultado.b = b;
+
+	return resultado;
+	
 }
+
+double SQres(DadosLinha* x, CofResult cofs) {
+	double soma =0;
+	for (size_t i = 0; i < 101; i++) {
+		soma += pow(x[i].y_i - (cofs.a * g1(x[i].t_t) + cofs.b * g2(x[i].t_t)) , 2);
+	}
+
+	return soma;
+}
+
+double media(DadosLinha *x) {
+	double soma = 0;
+	for (size_t i = 0; i < 101; i++) {
+		soma += x[i].y_i;
+	}
+	soma /= 101;
+	return soma;
+}
+
+double SQtot(DadosLinha *x) {
+	double sq_media = media(x);
+	double soma =0;
+	for (size_t i = 0; i < 101; i++) {
+		soma += pow(x[i].y_i - sq_media, 2);
+	}
+
+	return soma;
+}
+
+double Cof_R(DadosLinha* x, CofResult cofs) {
+	return 1.0 - (SQres(x, cofs) / SQtot(x));
+}
+
+
 
 int main(int argc, char **argv)
 {
@@ -138,6 +186,12 @@ int main(int argc, char **argv)
 	}
 	*/
 
-	SistLin(arquivos);
+	CofResult cofs;
+
+
+
+	cofs = SistLin(arquivos);
+	double cof_r_novo = Cof_R(arquivos, cofs);
+	printf("R^2 = %lf\n", cof_r_novo);
 	return 0;
 }
